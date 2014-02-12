@@ -140,7 +140,7 @@ class SassFile
    */
   public static function find_file($filename, $dir)
   {
-    $partialname = dirname($filename).DIRECTORY_SEPARATOR.'_'.basename($filename);
+    $partialname = str_replace(basename($filename), ('_'.basename($filename)), $filename);
 
     foreach (array($filename, $partialname) as $file) {
       if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
@@ -149,9 +149,10 @@ class SassFile
     }
 
     if (is_dir($dir)) {
-      $files = array_slice(scandir($dir), 2);
+      $files = scandir($dir);
 
       foreach ($files as $file) {
+        if (($file === '.') || ($file === '..')) continue;
         if (substr($file, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
           $path = self::find_file($filename, $dir . DIRECTORY_SEPARATOR . $file);
           if ($path !== false) {
