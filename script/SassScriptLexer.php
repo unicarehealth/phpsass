@@ -85,11 +85,11 @@ class SassScriptLexer
       } elseif (($match = SassString::isa($string)) !== false) {
         $stringed = new SassString($match);
         if (
-          strlen($stringed->quote) == 0 && 
+          strlen($stringed->quote) == 0 &&
           SassList::isa($string) !== false &&
-          // recursion loop prevented for expressions 
+          // recursion loop prevented for expressions
           // like "transition: -webkit-transform 1s"
-          !preg_match("/^\-\w+\-\w$", $stringed->value)
+          !preg_match("/^\-\w+\-\w+$/", $stringed->value)
           ) {
           $tokens[] = new SassList($string);
         } else {
