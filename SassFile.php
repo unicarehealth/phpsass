@@ -106,7 +106,7 @@ class SassFile
 
       return $sass ? $sass : self::get_file($filename . '.' . self::SCSS, $parser);
     }
-    if (file_exists($filename)) {
+    if (is_file($filename)) {
       return array($filename);
     }
     $paths = $parser->load_paths;
@@ -188,7 +188,7 @@ class SassFile
     }
 
     foreach (array($filename, $partialname) as $file) {
-      if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
+      if (is_file($dir . DIRECTORY_SEPARATOR . $file)) {
         return realpath($dir . DIRECTORY_SEPARATOR . $file);
       }
     }
