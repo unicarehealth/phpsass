@@ -29,8 +29,8 @@ class SassFile
 
   /**
    * Returns the parse tree for a file.
-   * @param string filename to parse
-   * @param SassParser Sass parser
+   * @param string $filename filename to parse
+   * @param SassParser $parser Sass parser
    * @return SassRootNode
    */
   public static function get_tree($filename, &$parser)
@@ -57,6 +57,13 @@ class SassFile
     return $tree;
   }
 
+  /**
+   * Get file content
+   *
+   * @param string $filename
+   * @param SassParser $parser Sass parser
+   * @return string
+  */
   public static function get_file_contents($filename, $parser)
   {
     $contents = file_get_contents($filename) . "\n\n "; #add some whitespace to fix bug
@@ -93,8 +100,9 @@ class SassFile
    * The file is looked for recursively under the load_paths directories
    * If the filename does not end in .sass or .scss try the current syntax first
    * then, if a file is not found, try the other syntax.
-   * @param string filename to find
-   * @param SassParser Sass parser
+   * @param string $filename filename to find
+   * @param SassParser $parser Sass parser
+   * @param boolean $sass_only
    * @return array of string path(s) to file(s) or FALSE if no such file
    */
   public static function get_file($filename, &$parser, $sass_only = TRUE)
@@ -137,8 +145,8 @@ class SassFile
   /**
    * Looks for the file recursively in the specified directory.
    * This will also look for _filename to handle Sass partials.
-   * @param string filename to look for
-   * @param string path to directory to look in and under. There is no ending / in the path
+   * @param string $filename filename to look for
+   * @param string $dir path to directory to look in and under. There is no ending / in the path
    * @return mixed string: full path to file if found, false if not
    */
   public static function find_file($filename, $dir)
