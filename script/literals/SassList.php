@@ -188,8 +188,7 @@ class SassList extends SassLiteral
     $braces = 0;
     $quotes = false;
     $stack = '';
-	$charCount = strlen($list);
-    for ($i = 0; $i < $charCount; $i++) {
+    for ($i = 0; $i < strlen($list); $i++) {
       $char = substr($list, $i, 1);
       switch ($char) {
         case '"':

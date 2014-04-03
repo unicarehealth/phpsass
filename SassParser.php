@@ -587,7 +587,7 @@ class SassParser
     $statement = ''; // source line being tokenised
     $token = null;
 
-    while ($token === null && !empty($this->source)) {
+    while (is_null($token) && !empty($this->source)) {
       while (empty($statement) && is_array($this->source) && !empty($this->source)) {
         $source = array_shift($this->source);
         $statement = trim($source);
@@ -688,8 +688,7 @@ class SassParser
     if (empty($srclen)) {
       $srclen = strlen($this->source);
     }
-	$localSourceStringLength = strlen($this->source);
-    while ($token === null && $srcpos < $localSourceStringLength) {
+    while (is_null($token) && $srcpos < strlen($this->source)) {
       $c = $this->source[$srcpos++];
       switch ($c) {
         case self::BEGIN_COMMENT:
@@ -746,7 +745,7 @@ class SassParser
         case self::END_BLOCK:
         case self::END_STATEMENT:
           $token = $this->createToken($statement . $c);
-          if ($token === null) {
+          if (is_null($token)) {
             $statement = '';
           }
           break;
@@ -756,7 +755,7 @@ class SassParser
       }
     }
 
-    if ($token === null) {
+    if (is_null($token)) {
       $srclen = $srcpos = 0;
     }
 
