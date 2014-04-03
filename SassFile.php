@@ -29,8 +29,8 @@ class SassFile
 
   /**
    * Returns the parse tree for a file.
-   * @param string filename to parse
-   * @param SassParser Sass parser
+   * @param string $filename filename to parse
+   * @param SassParser $parser Sass parser
    * @return SassRootNode
    */
   public static function get_tree($filename, &$parser)
@@ -93,8 +93,8 @@ class SassFile
    * The file is looked for recursively under the load_paths directories
    * If the filename does not end in .sass or .scss try the current syntax first
    * then, if a file is not found, try the other syntax.
-   * @param string filename to find
-   * @param SassParser Sass parser
+   * @param string $filename filename to find
+   * @param SassParser $parser Sass parser
    * @return array of string path(s) to file(s) or FALSE if no such file
    */
   public static function get_file($filename, &$parser, $sass_only = TRUE)
@@ -137,8 +137,8 @@ class SassFile
   /**
    * Looks for the file recursively in the specified directory.
    * This will also look for _filename to handle Sass partials.
-   * @param string filename to look for
-   * @param string path to directory to look in and under
+   * @param string $filename filename to look for
+   * @param string $dir path to directory to look in and under
    * @return mixed string: full path to file if found, false if not
    */
   public static function find_file($filename, $dir)
