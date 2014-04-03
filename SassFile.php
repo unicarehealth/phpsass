@@ -138,7 +138,7 @@ class SassFile
    * Looks for the file recursively in the specified directory.
    * This will also look for _filename to handle Sass partials.
    * @param string filename to look for
-   * @param string path to directory to look in and under. There is no ending / in the path
+   * @param string path to directory to look in and under
    * @return mixed string: full path to file if found, false if not
    */
   public static function find_file($filename, $dir)
@@ -146,13 +146,12 @@ class SassFile
     $partialname = str_replace(basename($filename), ('_'.basename($filename)), $filename);
 
     if (strstr($filename, DIRECTORY_SEPARATOR . '**')) {
-	  $specialDirectory = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**'));
-      if (is_dir($specialDirectory)) {
+      if (is_dir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')))) {
         $paths = array();
-        $files = scandir($specialDirectory);
+        $files = scandir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')));
         foreach ($files as $file) {
           if ($file === '..') continue;
-          if (is_dir($specialDirectory . DIRECTORY_SEPARATOR . $file)) {
+          if (is_dir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')) . DIRECTORY_SEPARATOR . $file)) {
             if ($file === '.') {
               $new_filename = str_replace(DIRECTORY_SEPARATOR . '**', '', $filename);
             }
@@ -194,15 +193,17 @@ class SassFile
       }
     }
 
-	// select only dirs
-	$dirs = glob($dir . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
-    foreach ($dirs as $deepDir) {
-	  // ignore hidden folders
-      if ($deepDir[0] === '.') continue;
+    if (is_dir($dir)) {
+      $files = scandir($dir);
 
-      $path = self::find_file($filename, $deepDir);
-      if ($path !== false) {
-        return $path;
+      foreach ($files as $file) {
+        if (($file === '.') || ($file === '..')) continue;
+        if (substr($file, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
+          $path = self::find_file($filename, $dir . DIRECTORY_SEPARATOR . $file);
+          if ($path !== false) {
+            return $path;
+          }
+        }
       }
     }
 
