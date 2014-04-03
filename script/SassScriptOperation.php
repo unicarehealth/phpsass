@@ -98,7 +98,7 @@ class SassScriptOperation
 
   /**
    * Getter function for properties
-   * @param string $name name of property
+   * @param string name of property
    * @return mixed value of the property
    * @throws SassScriptOperationException if the property does not exist
    */
@@ -113,7 +113,7 @@ class SassScriptOperation
 
   /**
    * Performs this operation.
-   * @param array $operands operands for the operation. The operands are SassLiterals
+   * @param array operands for the operation. The operands are SassLiterals
    * @return SassLiteral the result of the operation
    * @throws SassScriptOperationException if the oprand count is incorrect or
    * the operation is undefined
@@ -168,7 +168,7 @@ class SassScriptOperation
   /**
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
-   * @param string $subject the subject string
+   * @param string the subject string
    * @return mixed match at the start of the string or false if no match
    */
   public static function isa($subject)

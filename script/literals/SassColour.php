@@ -280,8 +280,7 @@ class SassColour extends SassLiteral
    *  + an array with 'hue', 'saturation', and 'lightness' keys, and optionally
    * an alpha key.
    * + an array of red, green, and blue values, and optionally an alpha value.
-   * @param mixed $colour the colour
-   * @throws SassColourException
+   * @param mixed the colour
    * @return SassColour
    */
   public function __construct($colour)
@@ -365,8 +364,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour subraction
-   * @param mixed $other value (SassColour or SassNumber) to subtract
-   * @throws SassColourException
+   * @param mixed value (SassColour or SassNumber) to subtract
    * @return sassColour the colour result
    */
   public function op_minus($other)
@@ -392,7 +390,6 @@ class SassColour extends SassLiteral
   /**
    * Colour multiplication
    * @param mixed SassColour|SassNumber value to multiply by
-   * @throws SassColourException
    * @return sassColour the colour result
    */
   public function op_times($other)
@@ -417,8 +414,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour division
-   * @param mixed $other value (SassColour or SassNumber) to divide by
-   * @throws SassColourException
+   * @param mixed value (SassColour or SassNumber) to divide by
    * @return sassColour the colour result
    */
   public function op_div($other)
@@ -443,8 +439,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour modulus
-   * @param mixed $other value (SassColour or SassNumber) to divide by
-   * @throws SassColourException
+   * @param mixed value (SassColour or SassNumber) to divide by
    * @return sassColour the colour result
    */
   public function op_modulo($other)
@@ -469,7 +464,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour bitwise AND
-   * @param mixed $other value (SassColour or SassNumber) to bitwise AND with
+   * @param mixed value (SassColour or SassNumber) to bitwise AND with
    * @return sassColour the colour result
    */
   public function op_bw_and($other)
@@ -494,7 +489,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour bitwise OR
-   * @param mixed $other value (SassColour or SassNumber) to bitwise OR with
+   * @param mixed value (SassColour or SassNumber) to bitwise OR with
    * @return sassColour the colour result
    */
   public function op_bw_or($other)
@@ -519,7 +514,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour bitwise XOR
-   * @param mixed $other value (SassColour or SassNumber) to bitwise XOR with
+   * @param mixed value (SassColour or SassNumber) to bitwise XOR with
    * @return sassColour the colour result
    */
   public function op_bw_xor($other)
@@ -557,7 +552,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour bitwise Shift Left
-   * @param sassNumber $other amount to shift left by
+   * @param sassNumber amount to shift left by
    * @return sassColour the colour result
    */
   public function op_shiftl($other)
@@ -574,7 +569,7 @@ class SassColour extends SassLiteral
 
   /**
    * Colour bitwise Shift Right
-   * @param sassNumber $other amount to shift right by
+   * @param sassNumber amount to shift right by
    * @return sassColour the colour result
    */
   public function op_shiftr($other)
@@ -592,7 +587,7 @@ class SassColour extends SassLiteral
   /**
   * Returns a copy of this colour with one or more channels changed.
   * RGB or HSL attributes may be changed, but not both at once.
-  * @param array $attributes attributes to change
+  * @param array attributes to change
   */
   public function with($attributes)
   {
@@ -620,7 +615,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the alpha component (opacity) of this colour.
-   * @param boolean $value
    * @return float the alpha component (opacity) of this colour.
    */
   public function getAlpha($value = false)
@@ -634,7 +628,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the hue of this colour.
-   * @param boolean $value
    * @return float the hue of this colour.
    */
   public function getHue($value = false)
@@ -651,7 +644,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the saturation of this colour.
-   * @param boolean $value
    * @return float the saturation of this colour.
    */
   public function getSaturation($value = false)
@@ -668,7 +660,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the lightness of this colour.
-   * @param boolean $value
    * @return float the lightness of this colour.
    */
   public function getLightness($value = false)
@@ -685,7 +676,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the blue component of this colour.
-   * @param boolean $value
    * @return integer the blue component of this colour.
    */
   public function getBlue($value = false)
@@ -702,7 +692,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the green component of this colour.
-   * @param boolean $value
    * @return integer the green component of this colour.
    */
   public function getGreen($value = false)
@@ -719,7 +708,6 @@ class SassColour extends SassLiteral
 
   /**
    * Returns the red component of this colour.
-   * @param boolean $value
    * @return integer the red component of this colour.
    */
   public function getRed($value = false)
@@ -791,7 +779,7 @@ class SassColour extends SassLiteral
 
   /**
    * Converts the colour to a string.
-   * @param boolean $css3 whether to use CSS3 SVG1.0 colour names
+   * @param boolean whether to use CSS3 SVG1.0 colour names
     * @return string the colour as a named colour, rgba(r,g,g,a) or #rrggbb
    */
   public function toString($css3 = true)
@@ -911,8 +899,8 @@ class SassColour extends SassLiteral
   * Asserts that the colour space is valid.
   * Returns the name of the colour space: 'rgb' if red, green, or blue keys given;
   * 'hsl' if hue, saturation or lightness keys given; null if a non-associative array
-  * @param array $colour the colour to test
-  * @param boolean $all whether all colour space keys must be given
+  * @param array the colour to test
+  * @param boolean whether all colour space keys must be given
   * @return string name of the colour space
   * @throws SassColourException if mixed colour space keys given or not all
   * keys for a colour space are required but not given (contructor)
@@ -942,7 +930,7 @@ class SassColour extends SassLiteral
   /**
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
-   * @param string $subject the subject string
+   * @param string the subject string
    * @return mixed match at the start of the string or false if no match
    */
   public static function isa($subject)

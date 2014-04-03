@@ -103,7 +103,7 @@ class SassParser
 
   /**
    * function:
-   * @var array An array of (function_name => callback) items.
+   * @var An array of (function_name => callback) items.
    */
   public static $functions;
 
@@ -220,7 +220,6 @@ class SassParser
    * Constructor.
    * Sets parser options
    * @param array $options
-   * @throws SassException
    * @return SassParser
    */
   public function __construct($options = array())
@@ -283,8 +282,7 @@ class SassParser
 
   /**
    * Getter.
-   * @param string $name name of property to get
-   * @throws SassException
+   * @param string name of property to get
    * @return mixed return value of getter function
    */
   public function __get($name)
@@ -399,8 +397,7 @@ class SassParser
 
   /**
    * Parse a sass file or Sass source code and returns the CSS.
-   * @param string $source name of source file or Sass source
-   * @param boolean $isFile
+   * @param string name of source file or Sass source
    * @return string CSS
    */
   public function toCss($source, $isFile = true)
@@ -413,9 +410,7 @@ class SassParser
    * returns the document tree that can then be rendered.
    * The file will be searched for in the directories specified by the
    * load_paths option.
-   * @param string $source name of source file or Sass source
-   * @param boolean $isFile
-   * @throws SassException
+   * @param string name of source file or Sass source
    * @return SassRootNode Root node of document tree
    */
   public function parse($source, $isFile = true)
@@ -479,8 +474,7 @@ class SassParser
   /**
    * Parse Sass source into a document tree.
    * If the tree is already created return that.
-   * @param string $source Sass source
-   * @throws SassException
+   * @param string Sass source
    * @return SassRootNode the root of this document tree
    */
   public function toTree($source)
@@ -511,8 +505,7 @@ class SassParser
   /**
    * Builds a parse tree under the parent node.
    * Called recursivly until the source is parsed.
-   * @param SassNode $parent the node
-   * @return SassNode
+   * @param SassNode the node
    */
   public function buildTree($parent)
   {
@@ -528,8 +521,6 @@ class SassParser
   /**
    * Creates and returns the next SassNode.
    * The tpye of SassNode depends on the content of the SassToken.
-   * @param SassNode $node
-   * @throws SassException
    * @return SassNode a SassNode of the appropriate type. Null when no more
    * source to parse.
    */
@@ -589,7 +580,6 @@ class SassParser
    * about it from SASS source.
    * Sass statements are passed over. Statements spanning multiple lines, e.g.
    * CSS comments and selectors, are assembled into a single statement.
-   * @throws SassException
    * @return object Statement token. Null if end of source.
    */
   public function sass2Token()
@@ -659,7 +649,7 @@ class SassParser
   /**
    * Returns the level of the line.
    * Used for .sass source
-   * @param string $source the source
+   * @param string the source
    * @return integer the level of the source
    * @throws Exception if the source indentation is invalid
    */
@@ -686,7 +676,6 @@ class SassParser
   /**
    * Returns an object that contains the next source statement and meta data
    * about it from SCSS source.
-   * @throws SassException
    * @return object Statement token. Null if end of source.
    */
   public function scss2Token()
@@ -778,8 +767,8 @@ class SassParser
    * Returns an object that contains the source statement and meta data about
    * it.
    * If the statement is just and end block we update the meta data and return null.
-   * @param string $statement source statement
-   * @return object|null
+   * @param string source statement
+   * @return SassToken
    */
   public function createToken($statement) {
     $this->line += substr_count($statement, "\n");
@@ -803,9 +792,8 @@ class SassParser
 
   /**
    * Parses a directive
-   * @param SassToken $token token to parse
-   * @param SassNode $parent parent node
-   * @throws SassException
+   * @param SassToken token to parse
+   * @param SassNode parent node
    * @return SassNode a Sass directive node
    */
   public function parseDirective($token, $parent)

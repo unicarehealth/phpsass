@@ -22,8 +22,7 @@ class SassList extends SassLiteral
 
   /**
    * SassBoolean constructor
-   * @param string $value value of the boolean type
-   * @param string $separator
+   * @param string value of the boolean type
    * @return SassBoolean
    */
   public function __construct($value, $separator = 'auto')
@@ -132,7 +131,7 @@ class SassList extends SassLiteral
   /**
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
-   * @param string $subject the subject string
+   * @param string the subject string
    * @return mixed match at the start of the string or false if no match
    */
   public static function isa($subject)

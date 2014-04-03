@@ -57,7 +57,6 @@
     }
 
     function test_files($files, $dir = '.') {
-	  $result = null;
       sort($files);
       foreach ($files as $i => $file) {
         $name = explode('.', $file);
@@ -74,7 +73,7 @@
         }
       }
 
-      exec('diff -ibwB /tmp/scss_test_0 /tmp/scss_test_1', $out);
+      $diff = exec('diff -ibwB /tmp/scss_test_0 /tmp/scss_test_1', $out);
       if (count($out)) {
         if (isset($_GET['full'])) {
           $out[] = "\n\n\n" . $result;

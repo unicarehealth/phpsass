@@ -41,7 +41,7 @@ class SassExpandedRenderer extends SassCompactRenderer
 
   /**
    * Renders a comment.
-   * @param SassNode $node the node being rendered
+   * @param SassNode the node being rendered
    * @return string the rendered commnt
    */
   public function renderComment($node)
@@ -57,8 +57,7 @@ class SassExpandedRenderer extends SassCompactRenderer
 
   /**
    * Renders properties.
-   * @param mixed $node
-   * @param array $properties properties to render
+   * @param array properties to render
    * @return string the rendered properties
    */
   public function renderProperties($node, $properties)
