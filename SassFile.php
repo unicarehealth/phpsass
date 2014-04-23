@@ -64,28 +64,7 @@ class SassFile
     $contents = preg_replace("/(^|\s)\/\/[^\n]+/", '', $contents);
     // SassFile::$parser = $parser;
     // SassFile::$path = $filename;
-    // $contents = preg_replace_callback('/url\(\s*[\'"]?(?![a-z]+:|\/+)([^\'")]+)[\'"]?\s*\)/i', 'SassFile::resolve_paths', $contents);
     return $contents;
-  }
-
-  public static function resolve_paths($matches)
-  {
-    // Resolve the path into something nicer...
-    return 'url("' . self::resolve_path($matches[1]) . '")';
-  }
-
-  public static function resolve_path($name)
-  {
-    $path = self::$parser->basepath . self::$path;
-    $path = substr($path, 0, strrpos($path, '/')) . '/';
-    $path = $path . $name;
-    $last = '';
-    while ($path != $last) {
-      $last = $path;
-      $path = preg_replace('`(^|/)(?!\.\./)([^/]+)/\.\./`', '$1', $path);
-    }
-
-    return $path;
   }
 
   /**
@@ -106,7 +85,7 @@ class SassFile
 
       return $sass ? $sass : self::get_file($filename . '.' . self::SCSS, $parser);
     }
-    if (file_exists($filename)) {
+    if (is_file($filename)) {
       return array($filename);
     }
     $paths = $parser->load_paths;
@@ -146,12 +125,13 @@ class SassFile
     $partialname = str_replace(basename($filename), ('_'.basename($filename)), $filename);
 
     if (strstr($filename, DIRECTORY_SEPARATOR . '**')) {
-      if (is_dir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')))) {
+	  $specialDirectory = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**'));
+      if (is_dir($specialDirectory)) {
         $paths = array();
-        $files = scandir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')));
+        $files = scandir($specialDirectory);
         foreach ($files as $file) {
           if ($file === '..') continue;
-          if (is_dir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**')) . DIRECTORY_SEPARATOR . $file)) {
+          if (is_dir($specialDirectory . DIRECTORY_SEPARATOR . $file)) {
             if ($file === '.') {
               $new_filename = str_replace(DIRECTORY_SEPARATOR . '**', '', $filename);
             }
@@ -172,8 +152,9 @@ class SassFile
     }
 
     if (substr($filename, -2) == DIRECTORY_SEPARATOR . '*') {
-      if (is_dir($dir . DIRECTORY_SEPARATOR . substr($filename, 0, strlen($filename) - 2))) {
-        $dir = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strlen($filename) - 2);
+	  $checkDir = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strlen($filename) - 2);
+      if (is_dir($checkDir)) {
+        $dir = $checkDir;
         $paths = array();
         $files = scandir($dir);
         foreach ($files as $file) {
@@ -188,22 +169,18 @@ class SassFile
     }
 
     foreach (array($filename, $partialname) as $file) {
-      if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
+      if (is_file($dir . DIRECTORY_SEPARATOR . $file)) {
         return realpath($dir . DIRECTORY_SEPARATOR . $file);
       }
     }
 
     if (is_dir($dir)) {
-      $files = scandir($dir);
-
-      foreach ($files as $file) {
-        if (($file === '.') || ($file === '..')) continue;
-        if (substr($file, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
-          $path = self::find_file($filename, $dir . DIRECTORY_SEPARATOR . $file);
-          if ($path !== false) {
-            return $path;
-          }
-        }
+	  $dirs = glob($dir . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+      foreach ($dirs as $deepDir) {
+	    $path = self::find_file($filename, $deepDir);
+        if ($path !== false) {
+	      return $path;
+	    }
       }
     }
 
