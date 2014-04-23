@@ -22,8 +22,6 @@ class SassFile
   const SCSS = 'scss';
   // const SASSC = 'sassc'; # tests for E_NOTICE
 
-  private static $extensions = array(self::SASS, self::SCSS);
-
   public static $path = FALSE;
   public static $parser = FALSE;
 

@@ -29,7 +29,6 @@ class SassScriptVariable
   /**
    * SassVariable constructor
    * @param string $value value of the Variable type
-   * @return SassVariable
    */
   public function __construct($value)
   {

@@ -106,8 +106,6 @@ class SassFunctionDefinitionNode extends SassNode
     list($arguments, $context) = SassScriptFunction::fill_parameters($this->args, $provided, $pcontext, $this);
     $context->setVariables($arguments);
 
-    $parser = $this->parent->parser;
-
     $children = array();
     try {
       foreach ($this->children as $child) {

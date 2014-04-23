@@ -183,7 +183,6 @@ class SassScriptParser
           if ($c <= 0) {
             array_push($outputQueue, new SassString(')'));
             break;
-            throw new SassScriptParserException('Unmatched parentheses', $context->node);
           }
         }
         // the token is an operator, o1, so:
