@@ -189,7 +189,8 @@ class SassList extends SassLiteral
     $braces = 0;
     $quotes = false;
     $stack = '';
-    for ($i = 0; $i < strlen($list); $i++) {
+	$listCount = strlen($list);
+    for ($i = 0; $i < $listCount; $i++) {
       $char = substr($list, $i, 1);
       switch ($char) {
         case '"':
@@ -229,8 +230,7 @@ class SassList extends SassLiteral
     }
 
     foreach ($out as $k => $v) {
-      $v = trim($v, ', ');
-      $out[$k] = $v;
+      $out[$k] = trim($v, ', ');
     }
 
     return $out;

@@ -639,7 +639,7 @@ class SassColour extends SassLiteral
    */
   public function getHue($value = false)
   {
-    if (is_null($this->hue)) {
+    if ($this->hue === null) {
       $this->rgb2hsl();
     }
     if ($value && isset($this->hue->value)) {
@@ -656,7 +656,7 @@ class SassColour extends SassLiteral
    */
   public function getSaturation($value = false)
   {
-    if (is_null($this->saturation)) {
+    if ($this->saturation === null) {
       $this->rgb2hsl();
     }
     if ($value && isset($this->saturation->value)) {
@@ -673,7 +673,7 @@ class SassColour extends SassLiteral
    */
   public function getLightness($value = false)
   {
-    if (is_null($this->lightness)) {
+    if ($this->lightness === null) {
       $this->rgb2hsl();
     }
     if ($value && isset($this->lightness->value)) {
@@ -690,7 +690,7 @@ class SassColour extends SassLiteral
    */
   public function getBlue($value = false)
   {
-    if (is_null($this->blue)) {
+    if ($this->blue === null) {
       $this->hsl2rgb();
     }
     if ($value && isset($this->blue->value)) {
@@ -707,7 +707,7 @@ class SassColour extends SassLiteral
    */
   public function getGreen($value = false)
   {
-    if (is_null($this->green)) {
+    if ($this->green === null) {
       $this->hsl2rgb();
     }
     if ($value && isset($this->green->value)) {
@@ -724,7 +724,7 @@ class SassColour extends SassLiteral
    */
   public function getRed($value = false)
   {
-    if (is_null($this->red)) {
+    if ($this->red === null) {
       $this->hsl2rgb();
     }
     if ($value && isset($this->red->value)) {

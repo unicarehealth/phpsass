@@ -397,8 +397,8 @@ class SassParser
       // 'debug' => $this->debug,
       'filename' => $this->filename,
       'functions' => $this->functions,
-      'line' => $this->line,
-      'line_numbers' => $this->line_numbers,
+      'line' => $this->getLine(),
+      'line_numbers' => $this->getLine_numbers(),
       'load_path_functions' => $this->load_path_functions,
       'load_paths' => $this->load_paths,
       'property_syntax' => ($this->property_syntax == "scss" ? null : $this->property_syntax),
@@ -608,7 +608,7 @@ class SassParser
     $statement = ''; // source line being tokenised
     $token = null;
 
-    while (is_null($token) && !empty($this->source)) {
+    while ($token === null && !empty($this->source)) {
       while (empty($statement) && is_array($this->source) && !empty($this->source)) {
         $source = array_shift($this->source);
         $statement = trim($source);
@@ -710,11 +710,11 @@ class SassParser
     if (empty($srclen)) {
       $srclen = strlen($this->source);
     }
-    while (is_null($token) && $srcpos < strlen($this->source)) {
+    while ($token === null && $srcpos < strlen($this->source)) {
       $c = $this->source[$srcpos++];
       switch ($c) {
         case self::BEGIN_COMMENT:
-          if (substr($this->source, $srcpos-1, strlen(self::BEGIN_SASS_COMMENT)) === self::BEGIN_SASS_COMMENT) {
+          if (substr($this->source, $srcpos-1, self::BEGIN_SASS_COMMENT_STRLEN) === self::BEGIN_SASS_COMMENT) {
             while ($this->source[$srcpos++] !== "\n") {
               if ($srcpos >= $srclen)
                 throw new SassException('Unterminated commend', (object) array(
@@ -767,7 +767,7 @@ class SassParser
         case self::END_BLOCK:
         case self::END_STATEMENT:
           $token = $this->createToken($statement . $c);
-          if (is_null($token)) {
+          if ($token === null) {
             $statement = '';
           }
           break;
@@ -777,7 +777,7 @@ class SassParser
       }
     }
 
-    if (is_null($token)) {
+    if ($token === null) {
       $srclen = $srcpos = 0;
     }
 
