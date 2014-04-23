@@ -52,8 +52,8 @@ class SassScriptLexer
 
   /**
    * Lex an expression into SassScript tokens.
-   * @param string expression to lex
-   * @param SassContext the context in which the expression is lexed
+   * @param string $string expression to lex
+   * @param SassContext $context the context in which the expression is lexed
    * @return array tokens
    */
   public function lex($string, $context)
@@ -125,7 +125,7 @@ class SassScriptLexer
   /**
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
-   * @param string the subject string
+   * @param string $subject the subject string
    * @return mixed match at the start of the string or false if no match
    */
   public function isWhitespace($subject)

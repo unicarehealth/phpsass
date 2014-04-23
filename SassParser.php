@@ -103,7 +103,7 @@ class SassParser
 
   /**
    * function:
-   * @var An array of (function_name => callback) items.
+   * @var array An array of (function_name => callback) items.
    */
   public static $functions;
 
@@ -220,6 +220,7 @@ class SassParser
    * Constructor.
    * Sets parser options
    * @param array $options
+   * @throws SassException
    * @return SassParser
    */
   public function __construct($options = array())
@@ -282,7 +283,8 @@ class SassParser
 
   /**
    * Getter.
-   * @param string name of property to get
+   * @param string $name name of property to get
+   * @throws SassException
    * @return mixed return value of getter function
    */
   public function __get($name)
@@ -397,7 +399,8 @@ class SassParser
 
   /**
    * Parse a sass file or Sass source code and returns the CSS.
-   * @param string name of source file or Sass source
+   * @param string $source name of source file or Sass source
+   * @param boolean $isFile
    * @return string CSS
    */
   public function toCss($source, $isFile = true)
@@ -410,7 +413,9 @@ class SassParser
    * returns the document tree that can then be rendered.
    * The file will be searched for in the directories specified by the
    * load_paths option.
-   * @param string name of source file or Sass source
+   * @param string $source name of source file or Sass source
+   * @param boolean $isFile
+   * @throws SassException
    * @return SassRootNode Root node of document tree
    */
   public function parse($source, $isFile = true)
@@ -474,7 +479,8 @@ class SassParser
   /**
    * Parse Sass source into a document tree.
    * If the tree is already created return that.
-   * @param string Sass source
+   * @param string $source Sass source
+   * @throws SassException
    * @return SassRootNode the root of this document tree
    */
   public function toTree($source)
@@ -505,7 +511,8 @@ class SassParser
   /**
    * Builds a parse tree under the parent node.
    * Called recursivly until the source is parsed.
-   * @param SassNode the node
+   * @param SassNode $parent the node
+   * @return SassNode
    */
   public function buildTree($parent)
   {
@@ -521,6 +528,8 @@ class SassParser
   /**
    * Creates and returns the next SassNode.
    * The tpye of SassNode depends on the content of the SassToken.
+   * @param SassNode $node
+   * @throws SassException
    * @return SassNode a SassNode of the appropriate type. Null when no more
    * source to parse.
    */
@@ -580,6 +589,7 @@ class SassParser
    * about it from SASS source.
    * Sass statements are passed over. Statements spanning multiple lines, e.g.
    * CSS comments and selectors, are assembled into a single statement.
+   * @throws SassException
    * @return object Statement token. Null if end of source.
    */
   public function sass2Token()
@@ -587,7 +597,7 @@ class SassParser
     $statement = ''; // source line being tokenised
     $token = null;
 
-    while ($token === null && !empty($this->source)) {
+    while (is_null($token) && !empty($this->source)) {
       while (empty($statement) && is_array($this->source) && !empty($this->source)) {
         $source = array_shift($this->source);
         $statement = trim($source);
@@ -649,7 +659,7 @@ class SassParser
   /**
    * Returns the level of the line.
    * Used for .sass source
-   * @param string the source
+   * @param string $source the source
    * @return integer the level of the source
    * @throws Exception if the source indentation is invalid
    */
@@ -676,6 +686,7 @@ class SassParser
   /**
    * Returns an object that contains the next source statement and meta data
    * about it from SCSS source.
+   * @throws SassException
    * @return object Statement token. Null if end of source.
    */
   public function scss2Token()
@@ -688,8 +699,7 @@ class SassParser
     if (empty($srclen)) {
       $srclen = strlen($this->source);
     }
-	$localSourceStringLength = strlen($this->source);
-    while ($token === null && $srcpos < $localSourceStringLength) {
+    while (is_null($token) && $srcpos < strlen($this->source)) {
       $c = $this->source[$srcpos++];
       switch ($c) {
         case self::BEGIN_COMMENT:
@@ -746,7 +756,7 @@ class SassParser
         case self::END_BLOCK:
         case self::END_STATEMENT:
           $token = $this->createToken($statement . $c);
-          if ($token === null) {
+          if (is_null($token)) {
             $statement = '';
           }
           break;
@@ -756,7 +766,7 @@ class SassParser
       }
     }
 
-    if ($token === null) {
+    if (is_null($token)) {
       $srclen = $srcpos = 0;
     }
 
@@ -767,8 +777,8 @@ class SassParser
    * Returns an object that contains the source statement and meta data about
    * it.
    * If the statement is just and end block we update the meta data and return null.
-   * @param string source statement
-   * @return SassToken
+   * @param string $statement source statement
+   * @return object|null
    */
   public function createToken($statement) {
     $this->line += substr_count($statement, "\n");
@@ -792,8 +802,9 @@ class SassParser
 
   /**
    * Parses a directive
-   * @param SassToken token to parse
-   * @param SassNode parent node
+   * @param SassToken $token token to parse
+   * @param SassNode $parent parent node
+   * @throws SassException
    * @return SassNode a Sass directive node
    */
   public function parseDirective($token, $parent)
