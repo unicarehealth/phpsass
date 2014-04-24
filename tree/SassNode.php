@@ -168,15 +168,18 @@ class SassNode
     return $this->children;
   }
 
-  /**
-   * Returns a value indicating if this node is a child of the passed node.
-   * This just checks the levels of the nodes. If this node is at a greater
-   * level than the passed node if is a child of it.
-   * @return boolean true if the node is a child of the passed node, false if not
-   */
+	/**
+	 * Returns a value indicating if this node is a child of the passed node.
+	 * This just checks the levels of the nodes. If this node is at a greater
+	 * level than the passed node if is a child of it.
+	 *
+	 * @param SassNode $node
+	 *
+	 * @return boolean true if the node is a child of the passed node, false if not
+	 */
   public function isChildOf($node)
   {
-    return $this->level > $node->level;
+    return $this->getLevel() > $node->getLevel();
   }
 
   /**

@@ -137,7 +137,7 @@ class SassScriptOperation
     }
     $operands = array_values($operands);
 
-    if (count($operands) > 1 && is_null($operands[1])) {
+    if (count($operands) > 1 && $operands[1] === null) {
       $operation = 'op_unary_' . $this->operator;
     } else {
       $operation = 'op_' . $this->operator;
@@ -155,7 +155,7 @@ class SassScriptOperation
     # avoid failures in case of null operands
     $count = count($operands);
     foreach ($operands as $i => $op) {
-      if (is_null($op)) {
+      if ($op === null) {
         $count--;
       }
     }

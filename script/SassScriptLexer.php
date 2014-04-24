@@ -65,6 +65,7 @@ class SassScriptLexer
     if (is_array($string)) {
       return $string;
     }
+	$tokens = array();
     // whilst the string is not empty, split it into it's tokens.
     while ($string !== false) {
       if (($match = $this->isWhitespace($string)) !== false) {

@@ -56,7 +56,7 @@ class SassScriptFunction
     }
 
     $token = $input;
-    if (is_null($token))
+    if ($token === null)
       return ' ';
 
     if (!is_object($token))

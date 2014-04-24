@@ -35,11 +35,6 @@ class SassDirectiveNode extends SassNode
   protected function getDirective()
   {
     return $this->token->source;
-    preg_match('/^(@[\w-]+)(?:\s*(\w+))*/', $this->token->source, $matches);
-    array_shift($matches);
-    $parts = implode(' ', $matches);
-
-    return strtolower($parts);
   }
 
   /**

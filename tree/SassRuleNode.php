@@ -250,12 +250,12 @@ class SassRuleNode extends SassNode
       $selector = $this->interpolate($selector, $context);
       $selectors = SassList::_build_list($selector);
 
-      foreach ($selectors as $selector) {
-        $selector = trim($selector, ' \'"'); // strip whitespace and quotes, just-in-case.
-        if ($this->hasParentReference($selector)) {
-          $resolvedSelectors = array_merge($resolvedSelectors, $this->resolveParentReferences($selector, $context));
+      foreach ($selectors as $selector_inner) {
+	    $selector_inner = trim($selector_inner, ' \'"'); // strip whitespace and quotes, just-in-case.
+        if ($this->hasParentReference($selector_inner)) {
+          $resolvedSelectors = array_merge($resolvedSelectors, $this->resolveParentReferences($selector_inner, $context));
         } else {
-          $normalSelectors[] = $selector;
+          $normalSelectors[] = $selector_inner;
         }
       }
     } // foreach
