@@ -90,4 +90,15 @@ class SassMixinNode extends SassNode
   {
     return $token->source[0] === self::NODE_IDENTIFIER;
   }
+  
+  /**
+   * Resolves selectors.
+   * Interpolates SassScript in selectors and resolves any parent references or
+   * appends the parent selectors.
+   * @param SassContext $context the context in which this node is parsed
+   * @return array
+   */
+  public function resolveSelectors($context){
+    return $this->parent->resolveSelectors($context);
+  }
 }
