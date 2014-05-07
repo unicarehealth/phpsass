@@ -142,14 +142,21 @@ class SassNode
     } else {
       $this->children[] = $child;
       $child->parent = $this;
-      $child->root = $this->root;
-    }
-    // The child will have children if a debug node has been added
-    foreach ($child->children as $grandchild) {
-      $grandchild->root = $this->root;
+      $child->setRoot($this->root);
     }
   }
-
+  
+  /**
+   * Sets a root recursively.
+   * @param SassNode the new root node
+   */
+  public function setRoot($root){
+    $this->root = $root;
+    foreach ($this->children as $child) {
+      $child->setRoot($this->root);
+    }
+  }
+  
   /**
    * Returns a value indicating if this node has children
    * @return boolean true if the node has children, false if not
