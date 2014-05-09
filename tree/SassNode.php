@@ -262,7 +262,7 @@ class SassNode
    */
   public function getParser()
   {
-    return $this->root->getParent();
+    return $this->root->parser;
   }
 
   /**
@@ -280,7 +280,7 @@ class SassNode
    */
   public function getScript()
   {
-    return $this->root->getScript();
+    return $this->root->script;
   }
 
   /**
@@ -289,7 +289,7 @@ class SassNode
    */
   public function getRenderer()
   {
-    return $this->root->getRenderer();
+    return $this->root->renderer;
   }
 
   /**
