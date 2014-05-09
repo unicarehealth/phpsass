@@ -22,9 +22,10 @@
  * @subpackage  Sass
  */
 
-require_once 'SassFile.php';
-require_once 'SassException.php';
-require_once 'tree/SassNode.php';
+require_once 'SassLoader.php';
+#require_once 'SassFile.php';
+#require_once 'SassException.php';
+#require_once 'tree/SassNode.php';
 
 /**
  * SassParser class.

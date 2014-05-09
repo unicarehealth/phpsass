@@ -9,8 +9,8 @@
  * @subpackage  Sass.tree
  */
 
-require_once(dirname(__FILE__).'/../script/SassScriptParser.php');
-require_once(dirname(__FILE__).'/../renderers/SassRenderer.php');
+#require_once(dirname(__FILE__).'/../script/SassScriptParser.php');
+#require_once(dirname(__FILE__).'/../renderers/SassRenderer.php');
 
 /**
  * SassRootNode class.
