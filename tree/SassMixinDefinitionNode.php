@@ -33,11 +33,14 @@ class SassMixinDefinitionNode extends SassNode
    */
   private $args = array();
 
-  /**
-   * SassMixinDefinitionNode constructor.
-   * @param object $token source token
-   * @return SassMixinDefinitionNode
-   */
+	/**
+	 * SassMixinDefinitionNode constructor.
+	 *
+	 * @param object $token source token
+	 *
+	 * @throws SassMixinDefinitionNodeException
+	 * @return SassMixinDefinitionNode
+	 */
   public function __construct($token)
   {
     preg_match(self::MATCH, $token->source, $matches);

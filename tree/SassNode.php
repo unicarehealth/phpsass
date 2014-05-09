@@ -69,11 +69,14 @@ class SassNode
     $this->token = $token;
   }
 
-  /**
-   * Getter.
-   * @param string $name name of property to get
-   * @return mixed return value of getter function
-   */
+	/**
+	 * Getter.
+	 *
+	 * @param string $name name of property to get
+	 *
+	 * @throws SassNodeException
+	 * @return mixed return value of getter function
+	 */
   public function __get($name)
   {
     $getter = 'get' . ucfirst($name);
@@ -130,15 +133,15 @@ class SassNode
 
   /**
    * Adds a child to this node.
-   * @return SassNode the child to add
    */
   public function addChild($child)
   {
+	/** @var $child SassNode */
     if ($child instanceof SassElseNode) {
-      if (!$this->lastChild instanceof SassIfNode) {
+      if (!$this->getLastChild() instanceof SassIfNode) {
         throw new SassException('@else(if) directive must come after @(else)if', $child);
       }
-      $this->lastChild->addElse($child);
+      $this->getLastChild()->addElse($child);
     } else {
       $this->children[] = $child;
       $child->parent = $this;
@@ -148,11 +151,12 @@ class SassNode
   
   /**
    * Sets a root recursively.
-   * @param SassNode the new root node
+   * @param SassNode $root the new root node
    */
   public function setRoot($root){
     $this->root = $root;
     foreach ($this->children as $child) {
+	    /** @var $child SassNode */
       $child->setRoot($this->root);
     }
   }
@@ -222,7 +226,7 @@ class SassNode
    */
   public function getDebug_info()
   {
-    return $this->parser->debug_info;
+    return $this->getParser()->debug_info;
   }
 
   /**
@@ -240,7 +244,7 @@ class SassNode
    */
   public function getLine_numbers()
   {
-    return $this->parser->line_numbers;
+    return $this->getParser()->line_numbers;
   }
 
   /**
@@ -258,7 +262,7 @@ class SassNode
    */
   public function getParser()
   {
-    return $this->root->parser;
+    return $this->root->getParent();
   }
 
   /**
@@ -267,7 +271,7 @@ class SassNode
    */
   public function getPropertySyntax()
   {
-    return $this->root->parser->propertySyntax;
+    return $this->root->getParser()->propertySyntax;
   }
 
   /**
@@ -276,7 +280,7 @@ class SassNode
    */
   public function getScript()
   {
-    return $this->root->script;
+    return $this->root->getScript();
   }
 
   /**
@@ -285,7 +289,7 @@ class SassNode
    */
   public function getRenderer()
   {
-    return $this->root->renderer;
+    return $this->root->getRenderer();
   }
 
   /**
@@ -294,23 +298,29 @@ class SassNode
    */
   public function getStyle()
   {
-    return $this->root->parser->style;
+    return $this->root->getParser()->style;
   }
 
-  /**
-   * Returns a value indicating whether this node is in a directive
-   * @param boolean true if the node is in a directive, false if not
-   */
+	/**
+	 * Returns a value indicating whether this node is in a directive
+	 *
+	 * @param boolean true if the node is in a directive, false if not
+	 *
+	 * @return bool
+	 */
   public function inDirective()
   {
     return $this->parent instanceof SassDirectiveNode ||
         $this->parent instanceof SassDirectiveNode;
   }
 
-  /**
-   * Returns a value indicating whether this node is in a SassScript directive
-   * @param boolean true if this node is in a SassScript directive, false if not
-   */
+	/**
+	 * Returns a value indicating whether this node is in a SassScript directive
+	 *
+	 * @param boolean true if this node is in a SassScript directive, false if not
+	 *
+	 * @return bool
+	 */
   public function inSassScriptDirective()
   {
     return $this->parent instanceof SassEachNode ||
@@ -323,12 +333,15 @@ class SassNode
       $this->parent->parent instanceof SassWhileNode;
   }
 
-  /**
-   * Evaluates a SassScript expression.
-   * @param string $expression expression to evaluate
-   * @param SassContext $context the context in which the expression is evaluated
-   * @return SassLiteral value of parsed expression
-   */
+	/**
+	 * Evaluates a SassScript expression.
+	 *
+	 * @param string      $expression expression to evaluate
+	 * @param SassContext $context    the context in which the expression is evaluated
+	 * @param mixed        $x
+	 *
+	 * @return SassLiteral value of parsed expression
+	 */
   public function evaluate($expression, $context, $x=null)
   {
     $context->node = $this;
@@ -346,7 +359,7 @@ class SassNode
   {
     $context->node = $this;
 
-    return $this->script->interpolate($expression, $context);
+    return $this->getScript()->interpolate($expression, $context);
   }
 
   /**
@@ -380,11 +393,14 @@ class SassNode
     return $children;
   }
 
-  /**
-   * Returns a value indicating if the token represents this type of node.
-   * @param object $token token
-   * @return boolean true if the token represents this type of node, false if not
-   */
+	/**
+	 * Returns a value indicating if the token represents this type of node.
+	 *
+	 * @param object $token token
+	 *
+	 * @throws SassNodeException
+	 * @return boolean true if the token represents this type of node, false if not
+	 */
   public static function isa($token)
   {
     throw new SassNodeException('Child classes must override this method');
@@ -396,6 +412,7 @@ class SassNode
     $p = $this->getParent();
     if ($p) echo str_repeat(' ', $i*2)." parent: ".get_class($p)."\n";
     foreach ($this->getChildren() as $c) {
+	    /** @var $c SassNode */
         $c->printDebugTree($i+1);
     }
   }

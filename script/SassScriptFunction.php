@@ -74,12 +74,14 @@ class SassScriptFunction
     return '';
   }
 
-  /**
-   * Evaluates the function.
-   * Look for a user defined function first - this allows users to override
-   * pre-defined functions, then try the pre-defined functions.
-   * @return object the value of this Function
-   */
+	/**
+	 * Evaluates the function.
+	 * Look for a user defined function first - this allows users to override
+	 * pre-defined functions, then try the pre-defined functions.
+	 *
+	 * @throws Exception
+	 * @return object the value of this Function
+	 */
   public function perform()
   {
     self::$context = new SassContext(SassScriptParser::$context);
@@ -134,7 +136,7 @@ class SassScriptFunction
 
     foreach ($this->args as $i => $arg) {
       if (is_object($arg) && isset($arg->quote)) {
-        $args[$i] = $arg->toString();
+        $args[$i] = (string)$arg;
       }
       if (!is_numeric($i) && SassScriptParser::$context->hasVariable($i)) {
         $args[$i] = SassScriptParser::$context->getVariable($i);
