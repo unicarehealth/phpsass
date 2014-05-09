@@ -82,7 +82,7 @@ class SassParser
   public $indentSpaces = 2;
 
   /**
-   * @var string source
+   * @var array source
    */
   public $source;
 
@@ -310,6 +310,7 @@ class SassParser
     if ($this->debug) {
       throw new SassException('No getter function for ' . $name);
     }
+	return NULL;
   }
 
   public function getBasepath()
@@ -396,7 +397,7 @@ class SassParser
       'callbacks' => $this->callbacks,
       // 'debug' => $this->debug,
       'filename' => $this->filename,
-      'functions' => $this->functions,
+      'functions' => $this->getFunctions(),
       'line' => $this->getLine(),
       'line_numbers' => $this->getLine_numbers(),
       'load_path_functions' => $this->load_path_functions,
@@ -450,6 +451,7 @@ class SassParser
           if ($return===null) {
             $return = $this->parse($code, $type);
           } else {
+	        /** @var SassNode $return */
             $newNode = $this->parse($code, $type);
               foreach ($newNode->children as $children) {
                 array_push($return->children, $children);
@@ -478,7 +480,7 @@ class SassParser
 
           return FALSE;
         }
-        $files_source .= SassFile::get_file_contents($this->filename, $this);
+        $files_source .= SassFile::get_file_contents($this->filename);
       }
 
       return $this->toTree($files_source);
@@ -541,7 +543,7 @@ class SassParser
    * The tpye of SassNode depends on the content of the SassToken.
    * @param SassNode $node
    * @throws SassException
-   * @return SassNode a SassNode of the appropriate type. Null when no more
+   * @return SassNode|NULL a SassNode of the appropriate type. Null when no more
    * source to parse.
    */
   public function getNode($node)
@@ -555,7 +557,7 @@ class SassParser
         return new SassCommentNode($token);
       case SassVariableNode::isa($token):
         return new SassVariableNode($token);
-      case SassPropertyNode::isa(array('token' => $token, 'syntax' => $this->property_syntax)):
+      case SassPropertyNode::isa(array('token' => $token, 'syntax' => $this->getProperty_syntax())):
         return new SassPropertyNode($token, $this->property_syntax);
       case SassFunctionDefinitionNode::isa($token):
         return new SassFunctionDefinitionNode($token);
@@ -565,7 +567,7 @@ class SassParser
             throw new SassException('Mixin definition shortcut not allowed in SCSS', $this);
           }
 
-          return;
+          return NULL;
         } else {
           return new SassMixinDefinitionNode($token);
         }
@@ -575,7 +577,7 @@ class SassParser
             throw new SassException('Mixin include shortcut not allowed in SCSS', $this);
           }
 
-          return;
+          return NULL;
         } else {
           return new SassMixinNode($token);
         }
@@ -813,7 +815,7 @@ class SassParser
 
   /**
    * Parses a directive
-   * @param SassToken $token token to parse
+   * @param stdClass $token token to parse
    * @param SassNode $parent parent node
    * @throws SassException
    * @return SassNode a Sass directive node
