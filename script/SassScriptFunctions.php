@@ -323,7 +323,7 @@ class SassScriptFunctions
    */
   public static function tint($colour, $amount)
   {
-	$white = new SassColour('white');
+    $white = new SassColour('white');
 	
     return self::mix($white,$colour,$amount);
   }
@@ -338,7 +338,7 @@ class SassScriptFunctions
    */
   public static function shade($colour, $amount)
   {
-	$black = new SassColour('black');
+    $black = new SassColour('black');
 	
     return self::mix($black,$colour,$amount);
   }
