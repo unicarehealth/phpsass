@@ -1,15 +1,12 @@
-$fiver: 500px;
-.sidebar {
+.foo {
 	width: 300px;
-	@media screen and (max-width: 1024px) {
-		width: $fiver;
+	@supports (background-blend-mode: multiply) {
+		background-blend-mode: multiply;
+    }
+}
+  
+@supports (background-blend-mode: multiply) {
+	.bar {
+		background-blend-mode: multiply;
 	}
-}
-
-@mixin test-mixin() {
-	color: blue;
-}
-
-@media all and (max-width: 800px) {
-	@include test-mixin;
 }
