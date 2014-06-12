@@ -834,6 +834,7 @@ class SassParser
         return new SassReturnNode($token);
         break;
       case '@media':
+      case '@supports':
         return new SassMediaNode($token);
         break;
       case '@mixin':
