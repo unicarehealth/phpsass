@@ -136,8 +136,15 @@ class SassCompactRenderer extends SassCompressedRenderer
    * @param SassNode $node the node being rendered
    * @return string the rendered selectors
    */
-  protected function renderSelectors($node)
-  {
-    return join(', ', $node->selectors);
-  }
+    protected function renderSelectors($node)
+    {
+      $selectors = array();
+      foreach ($node->selectors as $selector) {
+        if (!$node->isPlaceholder($selector)) {
+          $selectors[] = $selector;
+        }
+      }
+
+      return join(', ', $selectors);
+    }
 }
