@@ -314,6 +314,36 @@ class SassScriptFunctions
   }
 
   /**
+   * Changes the tint of a colour, mixing it with the $amount of white.
+   * @param SassColour $colour The colour to adjust
+   * @param SassNumber $amount The amount of white to mix with the $colour
+   * @return SassColour The adjusted colour
+   * @throws SassScriptFunctionException If $colour is not a colour or
+   * $amount is not a number
+   */
+  public static function tint($colour, $amount)
+  {
+    $white = new SassColour('white');
+	
+    return self::mix($white,$colour,$amount);
+  }
+  
+   /**
+   * Changes the shade of a colour, mixing it with the $amount of black.
+   * @param SassColour $colour The colour to adjust
+   * @param SassNumber $amount The amount of black to mix with the $colour
+   * @return SassColour The adjusted colour
+   * @throws SassScriptFunctionException If $colour is not a colour or
+   * $amount is not a number
+   */
+  public static function shade($colour, $amount)
+  {
+    $black = new SassColour('black');
+	
+    return self::mix($black,$colour,$amount);
+  }
+
+  /**
    * Makes a colour lighter.
    * @param SassColour $colour The colour to lighten
    * @param SassNumber $amount The amount to lighten the colour by
