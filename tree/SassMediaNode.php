@@ -18,7 +18,7 @@
 class SassMediaNode extends SassNode
 {
   const IDENTIFIER = '@';
-  const MATCH = '/^@(media)\s+(.+?)\s*;?$/';
+  const MATCH = '/^@(media|supports)\s+(.+?)\s*;?$/';
   const MEDIA = 1;
 
   public $token;
