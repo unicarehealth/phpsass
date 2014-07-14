@@ -37,11 +37,6 @@ class SassRuleNode extends SassNode
   private $parentSelectors = array();
 
   /**
-   * @var array resolved selectors
-   */
-  private $resolvedSelectors = array();
-
-  /**
    * @var boolean whether the node expects more selectors
    */
   private $isContinued;
@@ -72,8 +67,8 @@ class SassRuleNode extends SassNode
 
   /**
    * Returns a value indicating if the selectors for this rule are to be continued.
-   * @param boolean true if the selectors for this rule are to be continued,
-   * false if not
+   *
+   * @return bool rue if the selectors for this rule are to be continued false if not
    */
   public function getIsContinued()
   {
@@ -113,7 +108,7 @@ class SassRuleNode extends SassNode
       }
     }
 
-    return $this->renderer->renderRule($this, $properties, $rules);
+    return $this->getRenderer()->renderRule($this, $properties, $rules);
   }
 
   /**
@@ -246,7 +241,7 @@ class SassRuleNode extends SassNode
     $resolvedSelectors = $normalSelectors = array();
     $this->parentSelectors = $this->getParentSelectors($context);
 
-    foreach ($this->selectors as $key=>$selector) {
+    foreach ($this->selectors as $selector) {
       $selector = $this->interpolate($selector, $context);
       $selectors = SassList::_build_list($selector);
 
@@ -276,11 +271,12 @@ class SassRuleNode extends SassNode
     return array_merge($normalSelectors, $resolvedSelectors);
   }
 
-  /**
-   * Returns the parent selector(s) for this node.
-   * This in an empty array if there is no parent selector.
-   * @return array the parent selector for this node
-   */
+	/**
+	 * Returns the parent selector(s) for this node.
+	 * This in an empty array if there is no parent selector.
+	 * @param mixed $context
+	 * @return array the parent selector for this node
+	 */
   protected function getParentSelectors($context)
   {
     $ancestor = $this->parent;

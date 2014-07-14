@@ -27,11 +27,11 @@ class SassWarnNode extends SassNode
    */
   private $statement;
 
-  /**
-   * SassReturnNode constructor.
-   * @param object $token source token
-   * @return SassBoolean|null
-   */
+	/**
+	 * SassReturnNode constructor.
+	 * @param object $token source token
+	 * @return SassWarnNode|void
+	 */
   public function __construct($token)
   {
     parent::__construct($token);

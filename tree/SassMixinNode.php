@@ -73,6 +73,7 @@ class SassMixinNode extends SassNode
 
     $children = array();
     foreach ($mixin->children as $child) {
+	  /** @var $child SassNode */
       $child->parent = $this;
       $children = array_merge($children, $child->parse($context));
     }

@@ -20,7 +20,6 @@ class SassFile
   const CSS  = 'css';
   const SASS = 'sass';
   const SCSS = 'scss';
-  // const SASSC = 'sassc'; # tests for E_NOTICE
 
   public static $path = FALSE;
   public static $parser = FALSE;
@@ -33,9 +32,9 @@ class SassFile
    */
   public static function get_tree($filename, &$parser)
   {
-    $contents = self::get_file_contents($filename, $parser);
+    $contents = self::get_file_contents($filename);
 
-    $options = array_merge($parser->options, array('line'=>1));
+    $options = array_merge($parser->getOptions(), array('line'=>1));
 
     # attempt at cross-syntax imports.
     $ext = substr($filename, strrpos($filename, '.') + 1);
@@ -43,9 +42,9 @@ class SassFile
       $options['syntax'] = $ext;
     }
 
-    $dirname = dirname($filename);
-    $options['load_paths'][] = $dirname;
-    if (!in_array($dirname, $parser->load_paths)) {
+    $dirName = dirname($filename);
+    $options['load_paths'][] = $dirName;
+    if (!in_array($dirName, $parser->load_paths)) {
       $parser->load_paths[] = dirname($filename);
     }
 
@@ -55,25 +54,33 @@ class SassFile
     return $tree;
   }
 
-  public static function get_file_contents($filename, $parser)
+	/**
+	 * Get the content of the given file
+	 *
+	 * @param string     $filename
+	 *
+	 * @return mixed|string
+	 */
+	public static function get_file_contents($filename)
   {
-    $contents = file_get_contents($filename) . "\n\n "; #add some whitespace to fix bug
+    $content = file_get_contents($filename) . "\n\n "; #add some whitespace to fix bug
     # strip // comments at this stage, with allowances for http:// style locations.
-    $contents = preg_replace("/(^|\s)\/\/[^\n]+/", '', $contents);
+    $content = preg_replace("/(^|\s)\/\/[^\n]+/", '', $content);
     // SassFile::$parser = $parser;
     // SassFile::$path = $filename;
-    return $contents;
+    return $content;
   }
 
-  /**
-   * Returns the full path to a file to parse.
-   * The file is looked for recursively under the load_paths directories
-   * If the filename does not end in .sass or .scss try the current syntax first
-   * then, if a file is not found, try the other syntax.
-   * @param string $filename filename to find
-   * @param SassParser $parser Sass parser
-   * @return array of string path(s) to file(s) or FALSE if no such file
-   */
+	/**
+	 * Returns the full path to a file to parse.
+	 * The file is looked for recursively under the load_paths directories
+	 * If the filename does not end in .sass or .scss try the current syntax first
+	 * then, if a file is not found, try the other syntax.
+	 * @param string     $filename filename to find
+	 * @param SassParser $parser   Sass parser
+	 * @param bool       $sass_only
+	 * @return array of string path(s) to file(s) or FALSE if no such file
+	 */
   public static function get_file($filename, &$parser, $sass_only = TRUE)
   {
     $ext = substr($filename, strrpos($filename, '.') + 1);
@@ -94,12 +101,12 @@ class SassFile
       }
     }
     foreach ($paths as $path) {
-      $filepath = self::find_file($filename, realpath($path));
-      if ($filepath !== false) {
-        if (!is_array($filepath)) {
-          return array($filepath);
+      $filePath = self::find_file($filename, realpath($path));
+      if ($filePath !== false) {
+        if (!is_array($filePath)) {
+          return array($filePath);
         }
-        return $filepath;
+        return $filePath;
       }
     }
     foreach ($parser->load_path_functions as $function) {
@@ -120,8 +127,6 @@ class SassFile
    */
   public static function find_file($filename, $dir)
   {
-    $partialname = str_replace(basename($filename), ('_'.basename($filename)), $filename);
-
     if (strstr($filename, DIRECTORY_SEPARATOR . '**')) {
 	  $specialDirectory = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**'));
       if (is_dir($specialDirectory)) {
@@ -166,7 +171,8 @@ class SassFile
       }
     }
 
-    foreach (array($filename, $partialname) as $file) {
+	$partialName = str_replace(basename($filename), ('_'.basename($filename)), $filename);
+    foreach (array($filename, $partialName) as $file) {
       if (is_file($dir . DIRECTORY_SEPARATOR . $file)) {
         return realpath($dir . DIRECTORY_SEPARATOR . $file);
       }

@@ -9,10 +9,10 @@
  * @subpackage  Sass.renderers
  */
 
-require_once 'SassCompactRenderer.php';
-require_once 'SassCompressedRenderer.php';
-require_once 'SassExpandedRenderer.php';
-require_once 'SassNestedRenderer.php';
+#require_once 'SassCompactRenderer.php';
+#require_once 'SassCompressedRenderer.php';
+#require_once 'SassExpandedRenderer.php';
+#require_once 'SassNestedRenderer.php';
 
 /**
  * SassRenderer class.
