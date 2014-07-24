@@ -3,9 +3,6 @@
 #IMPORTANT NOTICE
 We will soon be implementing PSR standards, and so compatibility requirements will move to PHP 5.3. A separate branch will be made for older versions, although it may not be updated.
 
-## Try online
-You can compile and compare SCSS against the ruby compiler at <http://phpsass.com/try>
-
 ## About
 This is fork of phamlp primarily for inclusiong as a Drupal pre-processor.
 However, there is no Drupal-specific code and it will work for any PHP system.
