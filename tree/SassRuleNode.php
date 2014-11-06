@@ -172,7 +172,7 @@ class SassRuleNode extends SassNode
 
   public function isPlaceholder($selector)
   {
-    return strpos($selector, '%') !== false;
+    return strpos($selector, '%') !== false && !preg_match("/^[\d]+%$/", $selector);
   }
 
   /**
