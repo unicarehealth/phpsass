@@ -121,28 +121,38 @@ class SassFile
   /**
    * Looks for the file recursively in the specified directory.
    * This will also look for _filename to handle Sass partials.
+   * Internal cache to find the files quickly
+   *
    * @param string $filename filename to look for
-   * @param string $dir path to directory to look in and under
+   * @param string $dir      path to directory to look in and under
+   *
    * @return mixed string: full path to file if found, false if not
    */
-  public static function find_file($filename, $dir)
-  {
+  public static function find_file($filename, $dir) {
+    // internal cache
+    static $pathCache = array();
+    $cacheKey = $filename . '@' . $dir;
+    if (isset($pathCache[$cacheKey])) {
+      return $pathCache[$cacheKey];
+    }
+
     if (strstr($filename, DIRECTORY_SEPARATOR . '**')) {
-	  $specialDirectory = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**'));
+      $specialDirectory = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strpos($filename, DIRECTORY_SEPARATOR . '**'));
       if (is_dir($specialDirectory)) {
         $paths = array();
         $files = scandir($specialDirectory);
         foreach ($files as $file) {
-          if ($file === '..') continue;
+          if ($file === '..') {
+            continue;
+          }
           if (is_dir($specialDirectory . DIRECTORY_SEPARATOR . $file)) {
             if ($file === '.') {
               $new_filename = str_replace(DIRECTORY_SEPARATOR . '**', '', $filename);
-            }
-            else {
+            } else {
               $new_filename = str_replace('**', $file, $filename);
             }
             $path = self::find_file($new_filename, $dir);
-            if ($path !== false) {
+            if ($path !== FALSE) {
               if (!is_array($path)) {
                 $path = array($path);
               }
@@ -150,44 +160,61 @@ class SassFile
             }
           }
         }
+        // cache and return
+        $pathCache[$cacheKey] = $paths;
         return $paths;
       }
     }
 
     if (substr($filename, -2) == DIRECTORY_SEPARATOR . '*') {
-	  $checkDir = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strlen($filename) - 2);
+      $checkDir = $dir . DIRECTORY_SEPARATOR . substr($filename, 0, strlen($filename) - 2);
       if (is_dir($checkDir)) {
         $dir = $checkDir;
         $paths = array();
         $files = scandir($dir);
         foreach ($files as $file) {
-          if (($file === '.') || ($file === '..')) continue;
+          if (($file === '.') || ($file === '..')) {
+            continue;
+          }
           $ext = substr($file, strrpos($file, '.') + 1);
           if (substr($file, -1) != '*' && ($ext == self::SASS || $ext == self::SCSS || $ext == self::CSS)) {
             $paths[] = $dir . DIRECTORY_SEPARATOR . $file;
           }
         }
+        // cache and return
+        $pathCache[$cacheKey] = $paths;
         return $paths;
       }
     }
 
-	$partialName = str_replace(basename($filename), ('_'.basename($filename)), $filename);
-    foreach (array($filename, $partialName) as $file) {
-      if (is_file($dir . DIRECTORY_SEPARATOR . $file)) {
-        return realpath($dir . DIRECTORY_SEPARATOR . $file);
+    $partialName = str_replace(basename($filename), ('_' . basename($filename)), $filename);
+
+    foreach (array(
+               $filename,
+               $partialName
+             ) as $file) {
+      $checkFile = $dir . DIRECTORY_SEPARATOR . $file;
+      if (is_file($checkFile)) {
+        // cache and return
+        $pathCache[$cacheKey] = realpath($checkFile);
+        return realpath($checkFile);
       }
     }
 
     if (is_dir($dir)) {
-	  $dirs = glob($dir . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+      $dirs = glob($dir . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
       foreach ($dirs as $deepDir) {
-	    $path = self::find_file($filename, $deepDir);
-        if ($path !== false) {
-	      return $path;
-	    }
+        $path = self::find_file($filename, $deepDir);
+        if ($path !== FALSE) {
+          // cache and return
+          $pathCache[$cacheKey] = $path;
+          return $path;
+        }
       }
     }
+    $pathCache[$cacheKey] = FALSE;
 
-    return false;
+    return FALSE;
   }
+
 }
