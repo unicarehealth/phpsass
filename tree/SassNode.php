@@ -9,29 +9,29 @@
  * @subpackage  Sass.tree
  */
 
-#require_once 'SassContext.php';
-#require_once 'SassCommentNode.php';
-#require_once 'SassDebugNode.php';
-#require_once 'SassDirectiveNode.php';
-#require_once 'SassImportNode.php';
-#require_once 'SassMixinNode.php';
-#require_once 'SassMixinDefinitionNode.php';
-#require_once 'SassPropertyNode.php';
-#require_once 'SassRootNode.php';
-#require_once 'SassRuleNode.php';
-#require_once 'SassVariableNode.php';
-#require_once 'SassExtendNode.php';
-#require_once 'SassEachNode.php';
-#require_once 'SassForNode.php';
-#require_once 'SassIfNode.php';
-#require_once 'SassElseNode.php';
-#require_once 'SassWhileNode.php';
-#require_once 'SassNodeExceptions.php';
-#require_once 'SassFunctionDefinitionNode.php';
-#require_once 'SassReturnNode.php';
-#require_once 'SassContentNode.php';
-#require_once 'SassWarnNode.php';
-#require_once 'SassMediaNode.php';
+require_once 'SassContext.php';
+require_once 'SassCommentNode.php';
+require_once 'SassDebugNode.php';
+require_once 'SassDirectiveNode.php';
+require_once 'SassImportNode.php';
+require_once 'SassMixinNode.php';
+require_once 'SassMixinDefinitionNode.php';
+require_once 'SassPropertyNode.php';
+require_once 'SassRootNode.php';
+require_once 'SassRuleNode.php';
+require_once 'SassVariableNode.php';
+require_once 'SassExtendNode.php';
+require_once 'SassEachNode.php';
+require_once 'SassForNode.php';
+require_once 'SassIfNode.php';
+require_once 'SassElseNode.php';
+require_once 'SassWhileNode.php';
+require_once 'SassNodeExceptions.php';				//This one was found to be required, so all require_once lines here were uncommented
+require_once 'SassFunctionDefinitionNode.php';
+require_once 'SassReturnNode.php';
+require_once 'SassContentNode.php';
+require_once 'SassWarnNode.php';
+require_once 'SassMediaNode.php';
 
 /**
  * SassNode class.
